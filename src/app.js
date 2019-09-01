@@ -12,17 +12,25 @@ var template = (
 );
 
 var app = {
-    title: 'Indecision App',
-    subtitle: 'In progress'
+    title: 'Indecision App!',
+    subtitle: 'In progress',
+    description: 'This is a simple description',
+    options: ['one', 'two']
 };
 
+function getSubtitle(_subtitle){
+    if (_subtitle){
+        return <p>{_subtitle}</p>;
+    } 
+}
+
 var templateTwo = (
-
     <div>
-        <h1>{app.title}</h1>
-        <h2>{app.subtitle}</h2>
+        <h1>{app.title ? app.title : 'No app'}</h1>
+        <h2>{app.title ? app.subtitle : 'No app'}</h2>
+        <p>{app.title && app.subtitle ? app.description : 'No app'}</p>
+        <p>{app.options.length > 0 ? 'Here are your options: ' + app.options[0] + ' and ' + app.options[1] : 'No options' }</p>
     </div>
-
 );
 
 //Create a templateTwo var JSX expression

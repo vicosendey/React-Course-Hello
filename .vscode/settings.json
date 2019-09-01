@@ -1,0 +1,4 @@
+{
+    "babel-compile-on-save.outDir": "./public/scripts",
+    "babel-compile-on-save.srcDir": "./src"
+}

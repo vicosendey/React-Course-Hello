@@ -24,9 +24,21 @@ var template = React.createElement(
 );
 
 var app = {
-    title: 'Indecision App',
-    subtitle: 'In progress'
+    title: 'Indecision App!',
+    subtitle: 'In progress',
+    description: 'This is a simple description',
+    options: ['one', 'two']
 };
+
+function getSubtitle(_subtitle) {
+    if (_subtitle) {
+        return React.createElement(
+            'p',
+            null,
+            _subtitle
+        );
+    }
+}
 
 var templateTwo = React.createElement(
     'div',
@@ -34,12 +46,22 @@ var templateTwo = React.createElement(
     React.createElement(
         'h1',
         null,
-        app.title
+        app.title ? app.title : 'No app'
     ),
     React.createElement(
         'h2',
         null,
-        app.subtitle
+        app.title ? app.subtitle : 'No app'
+    ),
+    React.createElement(
+        'p',
+        null,
+        app.title && app.subtitle ? app.description : 'No app'
+    ),
+    React.createElement(
+        'p',
+        null,
+        app.options.length > 0 ? 'Here are your options: ' + app.options[0] + ' and ' + app.options[1] : 'No options'
     )
 );
 
