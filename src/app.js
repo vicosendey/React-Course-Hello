@@ -1,45 +1,78 @@
-console.log("App.js is running!");
-
 // JSX - JavaScript XML
-var template = (
 
-    <div>
-        <h1>Indecision App</h1>
-        <h3>Just testing</h3>
-        <p>This is JSX from app.js!</p>
-    </div>
-
-);
-
-var app = {
-    title: 'Indecision App!',
-    subtitle: 'In progress',
-    description: 'This is a simple description',
-    options: ['one', 'two']
+const app = {
+    title: 'Indecision App',
+    subtitle: 'Put your life in the hands of a computer',
+    options: []
 };
 
-function getSubtitle(_subtitle){
-    if (_subtitle){
-        return <p>{_subtitle}</p>;
-    } 
+const onFormSubmit = (e) =>{
+    e.preventDefault();
+    const option = e.target.elements.option.value;
+
+    if(option){
+        app.options.push(option);
+        e.target.elements.option.value = '';
+        renderApp();
+    }
+
+};
+
+const clearOptions = () =>{
+   app.options = [];
+   renderApp();
+};
+
+const onMakeDecision = () =>{
+    if(app.options.length > 0){
+        const randomNum = Math.floor(Math.random() * app.options.length);
+        const option = app.options[randomNum];
+        alert(option);
+        console.log(randomNum);
+    } else{
+        alert('Add some itens first!');
+    }
+    
+};
+
+const appRoot = document.getElementById('app'); 
+let toggleCliked = false;
+
+const toggleList = () =>{
+    toggleCliked = !toggleCliked;
+    renderApp();
 }
 
-var templateTwo = (
-    <div>
-        <h1>{app.title ? app.title : 'No app'}</h1>
-        <h2>{app.title ? app.subtitle : 'No app'}</h2>
-        <p>{app.title && app.subtitle ? app.description : 'No app'}</p>
-        <p>{app.options.length > 0 ? 'Here are your options: ' + app.options[0] + ' and ' + app.options[1] : 'No options' }</p>
-    </div>
-);
+const renderApp = () =>{
+    const template = (
+        <div>
+            <h1>{app.title}</h1>
+            {app.subtitle && <p>{app.subtitle}</p>}
+            <p>{app.options.length > 0 ? 'Here are your options' : 'No options'}</p>
+            <button disabled={app.options.length === 0} onClick={onMakeDecision}>What should I do?</button>
+            <button onClick={clearOptions}>Remove All</button>
+            <button onClick={toggleList}>{toggleCliked ? 'Show List' : 'Hide List'}</button>
+            {
+                !toggleCliked && 
+                ( 
+                <ol>
+                {
+                    app.options.map((option) => {
+                        return <li key={option}>{option}</li>
+                    })
+                }
+                </ol>
+                )
+            }
+            
+            <form onSubmit={onFormSubmit}>
+                <input type="text" name="option"/>
+                <button>Add option</button>
+            </form>
+        </div>
+    );
 
-//Create a templateTwo var JSX expression
-//div 
-//  h1 -> Vinicius Cosendey
-//  p ->  Age: 21
-//  p ->  Location: Brazil
-// Render templateTwo
+    ReactDOM.render(template, appRoot);
+};
 
-var appRoot = document.getElementById('app'); 
-
-ReactDOM.render(templateTwo, appRoot);
+renderApp();

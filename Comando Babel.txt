@@ -1,2 +1,7 @@
 babel src/app.js --out-file=public/scripts/app.js --presets=env,react --watch
+<<<<<<< HEAD
 live-server public
+=======
+
+babel src/playground/es6.js --out-file=public/scripts/app.js --presets=env,react --watch
+>>>>>>> 39e0fd4d9be9bcea770e2b6e9f1f42737e1d7201
