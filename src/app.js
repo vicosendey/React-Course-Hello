@@ -2,7 +2,7 @@
      constructor(props){
          super(props);
          this.state = {
-             options: []
+             options: props.options
          };
          this.hasOptionsFunc = this.hasOptionsFunc.bind(this);
          this.handleDeleteOptions = this.handleDeleteOptions.bind(this);
@@ -38,11 +38,10 @@
         console.log(randomNum);
      }
     render(){
-        const   title = 'Indecision',
-                subtitle = 'Put your life in the hands of a computer';
+        const subtitle = 'Put your life in the hands of a computer';
         return (
             <div>
-                <Header title = {title} subtitle= {subtitle}/>
+                <Header subtitle= {subtitle}/>
                 <Action 
                     hasOptions={this.hasOptionsFunc()} 
                     handlePick={this.handlePick}
@@ -59,13 +58,21 @@
     }
 }
 
+IndecisionApp.defaultProps = { 
+    options: []
+};
+
 const Header = (props) => {
     return (
         <div>
             <h1>{props.title}</h1>
-            <h2>{props.subtitle}</h2>
+            {props.subtitle && <h2>{props.subtitle}</h2>}
         </div>
     );
+};
+
+Header.defaultProps = {
+    title: 'Indecision App'
 };
 
 const Action = (props) => {
@@ -134,4 +141,4 @@ class AddOption extends React.Component{
 
 
 
-ReactDOM.render(<IndecisionApp />, document.getElementById('app'));
+ReactDOM.render(<IndecisionApp options={['1','2','3']}/>, document.getElementById('app'));
