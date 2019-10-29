@@ -8,28 +8,36 @@
          this.handleDeleteOptions = this.handleDeleteOptions.bind(this);
          this.handlePick = this.handlePick.bind(this);
          this.handleAddOption = this.handleAddOption.bind(this);
+         this.handleDeleteOption = this.handleDeleteOption.bind(this);
+     }
+     componentDidMount(){
+         console.log('componentDidMount!');
+     }
+     componentDidUpdate(){
+         console.log('componentDidUpdate!');
      }
      hasOptionsFunc(){
         return this.state.options.length > 0 ? true : false;
      }
      handleDeleteOptions(){
-         this.setState(() => {
-             return {
-                options: []
-             };
-         });
+         this.setState(() => ({
+             options: []
+         }));
      }
+     handleDeleteOption(optionToRemove){
+        this.setState((prevState) => ({
+            options: prevState.options.filter((option)=> optionToRemove !== option  )
+        }));
+     };
      handleAddOption(option){
          if(!option){
             return 'Enter valid value to add item';
          } else if(this.state.options.indexOf(option) > -1){
             return 'This option already exists';
          } 
-        this.setState((prevState) =>{
-            return {
+        this.setState((prevState) =>({
                 options: prevState.options.concat(option)
-            };
-        });
+        }));
      }
      handlePick(){
         const randomNum = Math.floor(Math.random() * this.state.options.length);
@@ -39,6 +47,7 @@
      }
     render(){
         const subtitle = 'Put your life in the hands of a computer';
+        console.log(this.state.options);
         return (
             <div>
                 <Header subtitle= {subtitle}/>
@@ -49,6 +58,7 @@
                 <Options
                     options = {this.state.options}
                     deleteFunc={this.handleDeleteOptions}
+                    handleDeleteOption={this.handleDeleteOption}
                 />
                 <AddOption 
                     handleAddOption={this.handleAddOption}
@@ -84,15 +94,21 @@ const Action = (props) => {
 };
 
 const Options = (props) => {
+    console.log(props.options);
     return (
         <div>
             <button onClick={props.deleteFunc}>Remove All</button>
             Options:
             {
-                props.options.map((i, index) => {
-                    return <Option key={index} optionText={i}/>
-                })
+                props.options.map((i, index) => (
+                    <Option
+                        key={index}
+                        optionText={i}
+                        handleDeleteOption={props.handleDeleteOption}
+                      />
+                    ))
             }
+
             
         </div>
     );
@@ -103,6 +119,13 @@ const Option = (props) => {
     return (
         <div>
             {props.optionText}
+            <button 
+                onClick={(e)=>{
+                    props.handleDeleteOption(props.optionText);
+                }}
+            >
+                Remove
+            </button>
         </div>
     );
 }
@@ -120,11 +143,9 @@ class AddOption extends React.Component{
         const option = e.target.elements.option.value.trim();
         const error = this.props.handleAddOption(option);
         
-        this.setState(() => {
-            return {
+        this.setState(() => ({
                 error: error
-            };
-        });
+        }));
     }
     render(){
         return (
