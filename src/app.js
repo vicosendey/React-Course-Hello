@@ -11,10 +11,27 @@
          this.handleDeleteOption = this.handleDeleteOption.bind(this);
      }
      componentDidMount(){
-         console.log('componentDidMount!');
+         try{
+            const json = localStorage.getItem('options');
+            const options = JSON.parse(json);
+            if(options){
+                this.setState(() => ({
+                    options// Same as options: options
+                }))
+         } 
+         }catch(e){
+            //Do nothing if it is invalid
+         }
      }
-     componentDidUpdate(){
-         console.log('componentDidUpdate!');
+     componentDidUpdate(prevProps, prevState){
+        if(prevState.options.length !== this.state.options.length){
+            const json = JSON.stringify(this.state.options);
+            localStorage.setItem('options', json);
+            console.log('componentDidUpdate!');
+        }
+     }
+     componentWillUnmount(){
+         console.log('componentWillUnmount');
      }
      hasOptionsFunc(){
         return this.state.options.length > 0 ? true : false;
@@ -98,7 +115,7 @@ const Options = (props) => {
     return (
         <div>
             <button onClick={props.deleteFunc}>Remove All</button>
-            Options:
+            {props.options.length === 0 && <p>Please add an option to get started!</p>}
             {
                 props.options.map((i, index) => (
                     <Option
@@ -144,8 +161,12 @@ class AddOption extends React.Component{
         const error = this.props.handleAddOption(option);
         
         this.setState(() => ({
-                error: error
+                error
         }));
+
+        if(!error){
+            e.target.elements.option.value = "";
+        }
     }
     render(){
         return (
