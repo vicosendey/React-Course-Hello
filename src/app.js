@@ -2,7 +2,7 @@
      constructor(props){
          super(props);
          this.state = {
-             options: props.options
+             options: []
          };
          this.hasOptionsFunc = this.hasOptionsFunc.bind(this);
          this.handleDeleteOptions = this.handleDeleteOptions.bind(this);
@@ -84,10 +84,6 @@
         );
     }
 }
-
-IndecisionApp.defaultProps = { 
-    options: []
-};
 
 const Header = (props) => {
     return (
